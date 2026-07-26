@@ -52,4 +52,4 @@ supabase.auth.getSession().then(({ data: { session } }) => {
   }
 
 });
-
+console.log(window.location.pathname);
