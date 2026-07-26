@@ -18,7 +18,6 @@ const checkPremium = async () => {
     .from('profiles')
     .select('premium')
     .eq('id', session.user.id)
-    .single()
 
   if (error) {
     console.log(error)
