@@ -47,7 +47,7 @@ if (loginButton) {
 }
 const { data: { session } } = await supabase.auth.getSession();
 
-if (window.location.pathname.includes("index.html")) {
+if (window.location.pathname === "/" || window.location.pathname.includes("index.html")) {
   if (!session) {
     window.location.href = "login.html";
   }
