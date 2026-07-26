@@ -60,6 +60,3 @@ supabase.auth.getSession().then(({ data: { session } }) => {
 
 });
 
-  }
-
-});
