@@ -47,9 +47,14 @@ if (loginButton) {
 }
 supabase.auth.getSession().then(({ data: { session } }) => {
 
-  if (!session) {
-    window.location.href = "login.html";
+  const path = window.location.pathname;
+
+  if (path === "/ilyas-s_website/" || path.endsWith("/index.html")) {
+
+    if (!session) {
+      window.location.href = "login.html";
+    }
+
   }
 
 });
-console.log(window.location.pathname);
