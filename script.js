@@ -6,3 +6,22 @@ const supabaseKey = 'sb_publishable_9QsBYrVvfUEcUXHp96sgYQ_w8tWm7vi'
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 console.log('Supabase connected!')
+const signupButton = document.getElementById('signup');
+
+if (signupButton) {
+  signupButton.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { error } = await supabase.auth.signUp({
+      email,
+      password
+    });
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert('Account created successfully! Check your email if confirmation is required.');
+    }
+  });
+}
