@@ -1,4 +1,3 @@
-alert("script loaded");
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
 const supabaseUrl = 'https://heolqzakdwsvlhhrtdjn.supabase.co'
@@ -48,14 +47,8 @@ if (loginButton) {
 }
 supabase.auth.getSession().then(({ data: { session } }) => {
 
-  const path = window.location.pathname;
-
-  if (path === "/" || path.endsWith("/index.html")) {
-
-    if (!session) {
-      window.location.href = "login.html";
-    }
-
+  if (!session) {
+    window.location.href = "login.html";
   }
 
 });
