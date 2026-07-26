@@ -13,10 +13,39 @@ if (signupButton) {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    const { error } = await supabase.auth.signUp({
+    if (signupButton) {
+  signupButton.addEventListener('click', async () => {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password
     });
+
+    if (error) {
+      alert(error.message);
+    } else {
+
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            id: data.user.id,
+            email: email,
+            premium: false
+          }
+        ]);
+
+      if (profileError) {
+        alert(profileError.message);
+      } else {
+        alert('Account created successfully!');
+      }
+
+    }
+  });
+}
 
     if (error) {
       alert(error.message);
