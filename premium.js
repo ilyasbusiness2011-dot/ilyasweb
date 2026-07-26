@@ -24,9 +24,9 @@ const checkPremium = async () => {
     return
   }
 
-  if (!data.premium) {
-    window.location.href = "subscribe.html"
-  }
+  if (!data || !data[0] || !data[0].premium) {
+  window.location.href = "subscribe.html"
+}
 
 }
 
