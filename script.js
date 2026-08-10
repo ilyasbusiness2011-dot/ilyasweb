@@ -70,7 +70,7 @@ if (loginButton) {
       alert(error.message);
     } else {
       alert('Login successful!');
-      window.location.href = 'index.html';
+      window.location.href = 'subscribe.html';
     }
   });
 }
