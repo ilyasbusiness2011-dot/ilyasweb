@@ -41,6 +41,7 @@ if (signupButton) {
         alert(profileError.message);
       } else {
         alert('Account created successfully!');
+        window.location.href = 'subscribe.html';
       }
 
     }
