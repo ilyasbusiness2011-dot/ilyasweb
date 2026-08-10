@@ -31,9 +31,41 @@
           plan_id: 'P-50T11181GL9006104NJ46XOA'
         });
       },
-      onApprove: function(data, actions) {
-        alert(data.subscriptionID); // You can add optional success message for the subscriber here
-      }
+      onApprove: async function(data, actions) {
+    const supabase = window.supabaseClient;
+
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) {
+        alert("Please log in before subscribing.");
+        return;
+    }
+
+    const response = await fetch(
+        "https://heolqzakdwsvlhhrtdjn.supabase.co/functions/v1/paypal-verify",
+        {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${session.access_token}`
+            },
+            body: JSON.stringify({
+                subscriptionID: data.subscriptionID
+            })
+        }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+        console.error(result);
+        alert("The subscription could not be verified.");
+        return;
+    }
+
+    alert("Subscription activated! Premium access granted.");
+    window.location.href = "premium.html";
+}
   }).render('#paypal-button-container-P-50T11181GL9006104NJ46XOA'); // Renders the PayPal button
 </script>
 </body>
