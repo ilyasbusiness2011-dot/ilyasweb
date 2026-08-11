@@ -8,7 +8,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 console.log("Supabase connected!");
 
 // ====================
-// SIGNUP
+// SIGN UP
 // ====================
 
 const signupButton = document.getElementById("signup");
@@ -49,13 +49,12 @@ if (signupButton) {
     }
 
     alert("Account created successfully!");
-
-    window.location.href = "subscribe.html";
+    window.location.replace("subscribe.html");
   });
 }
 
 // ====================
-// LOGIN
+// LOG IN
 // ====================
 
 const loginButton = document.getElementById("login");
@@ -76,8 +75,7 @@ if (loginButton) {
     }
 
     alert("Login successful!");
-
-    window.location.href = "subscribe.html";
+    window.location.replace("subscribe.html");
   });
 }
 
@@ -85,32 +83,35 @@ if (loginButton) {
 // PROTECT PREMIUM INDEX
 // ====================
 
-supabase.auth.getSession().then(async ({ data: { session } }) => {
+(async () => {
   const path = window.location.pathname;
 
-  // Only protect index.html / website root
   if (path === "/ilyas-s_website/" || path.endsWith("/index.html")) {
 
-    // Not logged in
+    const {
+      data: { session }
+    } = await supabase.auth.getSession();
+
+    // Not logged in → LOGIN
     if (!session) {
-      window.location.href = "login.html";
+      window.location.replace("login.html");
       return;
     }
 
-    // Get this user's premium status
+    // Logged in → check premium status
     const { data: profile, error } = await supabase
       .from("profiles")
       .select("premium")
       .eq("id", session.user.id)
       .single();
 
-    // Not premium
-    if (error || !profile || profile.premium !== true) {
-      window.location.href = "subscribe.html";
+    // Logged in but NOT premium → SUBSCRIBE
+    if (error || profile?.premium !== true) {
+      window.location.replace("subscribe.html");
       return;
     }
 
-    // Premium user → stay on index.html
+    // Premium → stay on index.html
     console.log("Premium access granted.");
   }
-});
+})();
