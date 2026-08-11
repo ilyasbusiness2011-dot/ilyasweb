@@ -1,22 +1,22 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-const supabaseUrl = 'https://heolqzakdwsvlhhrtdjn.supabase.co'
-const supabaseKey = 'sb_publishable_9QsBYrVvfUEcUXHp96sgYQ_w8tWm7vi'
+const supabaseUrl = "https://heolqzakdwsvlhhrtdjn.supabase.co";
+const supabaseKey = "sb_publishable_9QsBYrVvfUEcUXHp96sgYQ_w8tWm7vi";
 
-const supabase = createClient(supabaseUrl, supabaseKey)
+const supabase = createClient(supabaseUrl, supabaseKey);
 
-console.log('Supabase connected!')
-const signupButton = document.getElementById('signup');
+console.log("Supabase connected!");
+
+// ====================
+// SIGNUP
+// ====================
+
+const signupButton = document.getElementById("signup");
 
 if (signupButton) {
-  signupButton.addEventListener('click', async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-
-    if (signupButton) {
-  signupButton.addEventListener('click', async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+  signupButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     const { data, error } = await supabase.auth.signUp({
       email,
@@ -25,42 +25,45 @@ if (signupButton) {
 
     if (error) {
       alert(error.message);
-    } else {
-
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: data.user.id,
-            email: email,
-            premium: false
-          }
-        ]);
-
-      if (profileError) {
-        alert(profileError.message);
-      } else {
-        alert('Account created successfully!');
-        window.location.href = 'subscribe.html';
-      }
-
+      return;
     }
+
+    if (!data.user) {
+      alert("Account created. Please check your email to confirm your account.");
+      return;
+    }
+
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .insert([
+        {
+          id: data.user.id,
+          email: email,
+          premium: false
+        }
+      ]);
+
+    if (profileError) {
+      alert(profileError.message);
+      return;
+    }
+
+    alert("Account created successfully!");
+
+    window.location.href = "subscribe.html";
   });
 }
 
-    if (error) {
-      alert(error.message);
-    } else {
-      alert('Account created successfully! Check your email if confirmation is required.');
-    }
-  });
-}
-const loginButton = document.getElementById('login');
+// ====================
+// LOGIN
+// ====================
+
+const loginButton = document.getElementById("login");
 
 if (loginButton) {
-  loginButton.addEventListener('click', async () => {
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
+  loginButton.addEventListener("click", async () => {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
@@ -69,33 +72,45 @@ if (loginButton) {
 
     if (error) {
       alert(error.message);
-    } else {
-      alert('Login successful!');
-      window.location.href = 'subscribe.html';
+      return;
     }
+
+    alert("Login successful!");
+
+    window.location.href = "subscribe.html";
   });
 }
-supabase.auth.getSession().then(({ data: { session } }) => {
 
+// ====================
+// PROTECT PREMIUM INDEX
+// ====================
+
+supabase.auth.getSession().then(async ({ data: { session } }) => {
   const path = window.location.pathname;
 
-  supabase.auth.getSession().then(async ({ data: { session } }) => {
-  const path = window.location.pathname;
-
+  // Only protect index.html / website root
   if (path === "/ilyas-s_website/" || path.endsWith("/index.html")) {
+
+    // Not logged in
     if (!session) {
       window.location.href = "login.html";
       return;
     }
 
+    // Get this user's premium status
     const { data: profile, error } = await supabase
       .from("profiles")
       .select("premium")
       .eq("id", session.user.id)
       .single();
 
-    if (error || !profile?.premium) {
+    // Not premium
+    if (error || !profile || profile.premium !== true) {
       window.location.href = "subscribe.html";
+      return;
     }
+
+    // Premium user → stay on index.html
+    console.log("Premium access granted.");
   }
 });
