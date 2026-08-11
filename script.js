@@ -79,12 +79,23 @@ supabase.auth.getSession().then(({ data: { session } }) => {
 
   const path = window.location.pathname;
 
-  if (path === "/ilyas-s_website/" || path.endsWith("/index.html")) {
+  supabase.auth.getSession().then(async ({ data: { session } }) => {
+  const path = window.location.pathname;
 
+  if (path === "/ilyas-s_website/" || path.endsWith("/index.html")) {
     if (!session) {
       window.location.href = "login.html";
+      return;
     }
 
-  }
+    const { data: profile, error } = await supabase
+      .from("profiles")
+      .select("premium")
+      .eq("id", session.user.id)
+      .single();
 
+    if (error || !profile?.premium) {
+      window.location.href = "subscribe.html";
+    }
+  }
 });
