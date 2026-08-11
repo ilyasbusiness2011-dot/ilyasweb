@@ -13,7 +13,7 @@
 <h2 style = "font-size: 30px ;text-align: center; ">$8.05 / month</h2>
 
 <script type="module" src="subscribe.js"></script>
-<div id="paypal-button-container-P-50T11181GL9006104NJ46XOA" style = "text-align: center; "></div>
+<div id="paypal-button-container-P-50T11181GL9006104NJ46XOA"></div>
 <script src="https://www.paypal.com/sdk/js?client-id=BAAX1xss_RaT5QFasjzajfIhzjLVkqMvaai3MpJCbYDQLJmoGvQ66pldSV8BGz1RwaIgU07-6r9R2TaU94&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
   paypal.Buttons({
@@ -21,7 +21,8 @@
           shape: 'rect',
           color: 'gold',
           layout: 'vertical',
-          label: 'subscribe'
+          label: 'subscribe';
+          text-align : 'center'
       },
       createSubscription: function(data, actions) {
         return actions.subscription.create({
