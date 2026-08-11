@@ -86,8 +86,7 @@ if (loginButton) {
 (async () => {
   const path = window.location.pathname;
 
-  if (path === "/ilyas-s_website/" || path.endsWith("/index.html")) {
-
+  if (path.endsWith("/premium.html")) {
     const {
       data: { session }
     } = await supabase.auth.getSession();
