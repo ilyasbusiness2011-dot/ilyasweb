@@ -10,25 +10,29 @@ const supabase = createClient(
     data: { session }
   } = await supabase.auth.getSession();
 
-  // Not logged in
+  // Not logged in → SIGN UP
   if (!session) {
-    window.location.replace("https://ilyasbusiness2011-dot.github.io/your-main-repo/login.html");
+    window.location.replace(
+      "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/signup.html"
+    );
     return;
   }
 
-  // Check subscription
+  // Logged in → check subscription
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("premium")
     .eq("id", session.user.id)
     .single();
 
-  // Not subscribed
+  // Logged in but NOT subscribed → SUBSCRIBE
   if (error || profile?.premium !== true) {
-    window.location.replace("https://ilyasbusiness2011-dot.github.io/your-main-repo/subscribe.html");
+    window.location.replace(
+      "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/subscribe.html"
+    );
     return;
   }
 
-  // Subscribed → allow page
+  // Subscribed → allow access
   document.documentElement.style.visibility = "visible";
 })();
