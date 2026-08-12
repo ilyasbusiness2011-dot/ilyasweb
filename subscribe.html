@@ -15,7 +15,7 @@
 
 <script type="module" src="subscribe.js"></script>
 <div style="display: flex; justify-content: center; width: 100%; ">    
-    <div id="paypal-button-container-P-50T11181GL9006104NJ46XOA" style="width: 100%; max-width: 280px; min-height: 70px;"></div>
+    <div id="paypal-button-container-P-50T11181GL9006104NJ46XOA" style="width: 100%; max-width: 450px; "></div>
 </div>    
 <script src="https://www.paypal.com/sdk/js?client-id=BAAX1xss_RaT5QFasjzajfIhzjLVkqMvaai3MpJCbYDQLJmoGvQ66pldSV8BGz1RwaIgU07-6r9R2TaU94&vault=true&intent=subscription" data-sdk-integration-source="button-factory"></script>
 <script>
@@ -24,7 +24,8 @@
           shape: 'rect',
           color: 'gold',
           layout: 'vertical',
-          label: 'subscribe'
+          label: 'subscribe',
+          height: 55
       },
       createSubscription: function(data, actions) {
         return actions.subscription.create({
