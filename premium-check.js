@@ -24,7 +24,8 @@ const supabase = createClient(
     .select("premium")
     .eq("id", session.user.id)
     .single();
-
+  console.log("PROFILE:", profile);
+  console.log("PROFILE ERROR:", error);
   // Logged in but NOT subscribed → SUBSCRIBE
   if (error || profile?.premium !== true) {
     window.location.replace(
