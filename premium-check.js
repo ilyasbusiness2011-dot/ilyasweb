@@ -39,7 +39,7 @@ const supabase = createClient(
         console.log("PROFILE QUERY FAILED");
 
         window.location.replace(
-            "https://ilyasbusiness2011-dot.github.io/ilyas_s_website/subscribe.html"
+            "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/subscribe.html"
         );
 
         return;
@@ -50,7 +50,7 @@ const supabase = createClient(
         console.log("PREMIUM IS NOT BOOLEAN TRUE");
 
         window.location.replace(
-            "https://ilyasbusiness2011-dot.github.io/ilyas_s_website/subscribe.html"
+            "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/subscribe.html"
         );
 
         return;
