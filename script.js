@@ -78,39 +78,3 @@ if (loginButton) {
     window.location.replace("subscribe.html");
   });
 }
-
-// ====================
-// PROTECT PREMIUM INDEX
-// ====================
-
-(async () => {
-  const path = window.location.pathname;
-
-  if (path.endsWith("/premium.html")) {
-    const {
-      data: { session }
-    } = await supabase.auth.getSession();
-
-    // Not logged in → LOGIN
-    if (!session) {
-      window.location.replace("login.html");
-      return;
-    }
-
-    // Logged in → check premium status
-    const { data: profile, error } = await supabase
-      .from("profiles")
-      .select("premium")
-      .eq("id", session.user.id)
-      .single();
-
-    // Logged in but NOT premium → SUBSCRIBE
-    if (error || profile?.premium !== true) {
-      window.location.replace("subscribe.html");
-      return;
-    }
-
-    // Premium → stay on index.html
-    console.log("Premium access granted.");
-  }
-})();
