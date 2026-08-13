@@ -18,22 +18,35 @@ const supabase = createClient(
     return;
   }
 
-  // Logged in → check subscription
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("premium")
     .eq("id", session.user.id)
     .single();
-  console.log("PROFILE:", profile);
-  console.log("PROFILE ERROR:", error);
-  // Logged in but NOT subscribed → SUBSCRIBE
-  if (error || profile?.premium !== true) {
+
+console.log("========== PREMIUM DEBUG ==========");
+console.log("USER ID:", session.user.id);
+console.log("PROFILE:", profile);
+console.log("ERROR:", error);
+console.log("PREMIUM VALUE:", profile?.premium);
+console.log("PREMIUM TYPE:", typeof profile?.premium);
+console.log("===================================");
+
+if (error) {
+    console.log("PROFILE QUERY FAILED");
     window.location.replace(
-      "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/subscribe.html"
+        "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/subscribe.html"
     );
     return;
-  }
+}
 
-  // Subscribed → allow access
-  document.documentElement.style.visibility = "visible";
-})();
+if (profile?.premium !== true) {
+    console.log("PREMIUM IS NOT BOOLEAN TRUE");
+    window.location.replace(
+        "https://ilyasbusiness2011-dot.github.io/ilyas-s_website/subscribe.html"
+    );
+    return;
+}
+
+console.log("✅ PREMIUM VERIFIED — NO REDIRECT");
+document.documentElement.style.visibility = "visible";
