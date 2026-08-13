@@ -75,6 +75,27 @@ if (loginButton) {
     }
 
     alert("Login successful!");
-    window.location.replace("subscribe.html");
+
+const {
+  data: { user }
+} = await supabase.auth.getUser();
+
+const { data: profile, error: profileError } = await supabase
+  .from("profiles")
+  .select("premium")
+  .eq("id", user.id)
+  .single();
+
+if (profileError) {
+  console.error(profileError);
+  alert("Could not check your subscription status.");
+  return;
+}
+
+if (profile?.premium === true) {
+  window.location.replace("premium.html");
+} else {
+  window.location.replace("subscribe.html");
+}
   });
 }
